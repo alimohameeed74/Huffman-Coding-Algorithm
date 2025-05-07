@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1746650101 source:e:\huffman_coding\code\main.cpp
+	<iostream>
+	<queue>
+	<vector>
+	<string>
+
