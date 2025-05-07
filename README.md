@@ -3,20 +3,14 @@
 
 This is a C++ implementation of the **Huffman Coding Algorithm**, a well-known algorithm used for **lossless data compression**. The project demonstrates how to compress and decompress text efficiently using a binary tree structure. The goal of this project is to understand how Huffman Coding works and to implement it in C++.
 
-## 📋 Table of Contents
+##  Table of Contents
 
 1. [Project Overview](#-project-overview)
 2. [Technologies Used](#-technologies-used)
 3. [How Huffman Coding Works](#-how-huffman-coding-works)
 4. [Features](#-features)
 5. [Example](#-example)
-6. [How to Compile and Run](#-how-to-compile-and-run)
-7. [Compression Statistics](#-compression-statistics)
-8. [Future Improvements](#-future-improvements)
-9. [License](#-license)
-10. [Contact](#-contact)
-
-
+   
 ##  Project Overview
 
 The **Huffman Coding Algorithm** minimizes the size of data by assigning shorter binary codes to more frequent characters and longer codes to less frequent ones. It uses a **binary tree** (Huffman Tree) to generate these codes. This project provides a detailed implementation of the algorithm from scratch, focusing on building the tree, generating the codes, and encoding/decoding the data.
