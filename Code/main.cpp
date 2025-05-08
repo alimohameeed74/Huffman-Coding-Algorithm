@@ -1,11 +1,30 @@
+/*
+========================================================================================================================================
+   => Project Name: Huffman Coding Algorithm Implementation.
+   => Project Description:
+   This is a C++ implementation of the Huffman Coding Algorithm, a well-known algorithm used for lossless data compression, this project
+   demonstrates how to compress and decompress text efficiently using a binary tree structure, the goal of this project is to understand
+   how Huffman Coding works and to implement it in C++.
+   => Made By:
+   1) Ali Mohamed Eissa Aboelmagd.
+   2) Addulrahman Ahmed Mohamed Rashad.
+   3) Abdulaziz Ahmed Abdulaziz.
+   => Student at Benha Faculty of Engineering, Communications & Computer Engineering Department.
+========================================================================================================================================
+*/
+
+
 #include <iostream>
 #include <queue>
 #include <vector>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
-// هيكل العقدة
+
+// ==================================================
+// The Structure of The Node
 struct Node {
     char ch;
     int freq;
@@ -16,30 +35,34 @@ struct Node {
         left = right = nullptr;
     }
 };
+// ==================================================
 
-// مقارنة لتحديد أولوية العقد
+
+
+// ==================================================
+// Compare to Determine The Priority of Nodes
 struct Compare {
     bool operator()(Node* a, Node* b) {
         return a->freq > b->freq;
     }
 };
-/*struct Compare {
-    bool operator()(Node* a, Node* b) {
-        if (a->freq == b->freq)
-            return a->ch > b->ch; // عشان الترتيب يكون ثابت للحروف المتساوية
-        return a->freq > b->freq;
-    }
-};*/
+// ==================================================
 
 
-// هيكل بيانات بسيط يحاكي unordered_map لتخزين الحروف وتردداتها أو رموزها
+// ==================================================
+// Map: A simple Structure Used to Store Letters and Their Frequencies or Codes.
 struct CharMap {
     char ch;
     string code;
 };
+// ==================================================
 
+
+
+// ==================================================
+// Class for Map
 class CustomMap {
-    CharMap data[256]; // نفترض أن الحروف لا تتعدى 256
+    CharMap data[256]; // Max Number of Letters
     int size;
 public:
     CustomMap() {
@@ -96,8 +119,12 @@ public:
         return data;
     }
 };
+// ==================================================
 
-// دالة توليد الرموز
+
+
+// ==================================================
+// Generate Codes for Each Letter
 void generateCodes(Node* root, string code, CustomMap& huffmanCode) {
     if (!root)
         return;
@@ -107,8 +134,13 @@ void generateCodes(Node* root, string code, CustomMap& huffmanCode) {
     generateCodes(root->left, code + "0", huffmanCode);
     generateCodes(root->right, code + "1", huffmanCode);
 }
+// ==================================================
 
-// دالة فك التشفير
+
+
+
+// ==================================================
+// Function for Decoding
 string decode(Node* root, string encodedStr) {
     string result = "";
     Node* curr = root;
@@ -123,23 +155,76 @@ string decode(Node* root, string encodedStr) {
     }
     return result;
 }
+// ==================================================
 
-// الدالة الرئيسية
+
+
+
+
+// Main Function
 int main() {
-    string text = "ALIMOHAMED";
+    string text="" ;
 
-    // حساب الترددات
+
+// ==================================================
+// The File Contains The Text to Be Encoded
+
+    string In_filePath = "Original_Text.txt";
+
+// ==================================================
+
+
+
+// ==================================================
+// Open the file Using ifstream
+
+    ifstream In_file(In_filePath);
+
+// ==================================================
+
+
+// ==================================================
+// confirm file opening
+    if (!In_file.is_open()) {
+
+        cout << "Failed to open file: " << In_filePath << endl;
+        return 1;
+    }
+// ==================================================
+
+
+
+// ==================================================
+// Read The File Line By Line Into a String and Store in Text Variable
+    string line;
+    while (getline(In_file, line)) {
+            text+=line;
+    }
+// ==================================================
+
+
+// ==================================================
+// Close the Input file
+    In_file.close();
+// ==================================================
+
+
+
+// ==================================================
+// Calculate Frequences
     CustomMap freqMap;
     for (char ch : text) {
-        if (ch == ' ') continue;
         freqMap.incrementFreq(ch);
     }
+// ==================================================
 
-    // بناء الشجرة
+
+// ==================================================
+// Bulding The Tree
     priority_queue<Node*, vector<Node*>, Compare> pq;
     CharMap* freqs = freqMap.getData();
     for (int i = 0; i < freqMap.getSize(); ++i) {
-        pq.push(new Node(freqs[i].ch, stoi(freqs[i].code)));   // بخزن العنصر والتكرار بتاعه في الكيو
+        pq.push(new Node(freqs[i].ch, stoi(freqs[i].code)));   // Stores The Letter and Its Frequency in The Queue
     }
 
     while (pq.size() > 1) {
@@ -153,28 +238,105 @@ int main() {
     }
 
     Node* root = pq.top();
+// ==================================================
 
-    // توليد الرموز
+
+
+// ==================================================
+// Generate Codes
     CustomMap huffmanCode;
     generateCodes(root, "", huffmanCode);
+// ==================================================
 
-    // طباعة الرموز
+
+
+// ==================================================
+// Printing The Codes for Each letter
     cout << "Huffman Codes:\n";
     for (int i = 0; i < huffmanCode.getSize(); ++i) {
         cout << huffmanCode.getData()[i].ch << ": " << huffmanCode.getData()[i].code << endl;
     }
+// ==================================================
 
-    // التشفير
+
+// ==================================================
+    cout<<"===================================================\n";
+
+    cout<<"The Size of Text Before Compression: "<<text.length()*8<<" Bits"<<endl;
+
+    cout<<"===================================================\n";
+// ==================================================
+// Stored The Encoded String to Print it
     string encoded = "";
     for (char ch : text) {
-        if (ch == ' ') continue;
         encoded += huffmanCode.get_code_of_char(ch);
     }
-    cout << "\nEncoded string:\n" << encoded << endl;
+// ==================================================
 
-    // فك التشفير
+
+
+// ==================================================
+// Preparing a File to Store The Encoded Data
+// ==================================================
+// Specify the File Path
+    string Out_filePath = "Binary_Encoeded_File.txt";
+// ==================================================
+
+
+// ==================================================
+// Create an ofstream object (opens file for writing)
+    ofstream Out_file(Out_filePath);
+// ==================================================
+
+
+// ==================================================
+// Check if the file opened successfully
+    if (!Out_file.is_open()) {
+        cout << "Failed to open file for writing: " << Out_filePath << endl;
+        return 1;
+    }
+// ==================================================
+
+
+// ==================================================
+// Stores the Data into Output File
+    for (char ch : encoded) {
+        Out_file << ch;
+    }
+// ==================================================
+
+
+
+// ==================================================
+    // Close the Out file
+    Out_file.close();
+// ==================================================
+
+
+
+// ==================================================
+// Printing Stage
+// ==================================================
+// Printing The Encoded Pattern and Display Its Size After Compression
+    cout << "\nEncoded string:\n" << encoded << endl << endl;
+
+    cout<<"===================================================\n";
+
+    cout<<"The Size of Text After Compression: "<<encoded.length()<<" Bits"<<endl;
+
+    cout<<"===================================================\n";
+// ==================================================
+
+
+
+// ==================================================
+// Diplay The Decoded Text
     string decoded = decode(root, encoded);
     cout << "\nDecoded string:\n" << decoded << endl;
+// ==================================================
 
+// ==================================================
+// End The Program
     return 0;
+// ==================================================
 }
