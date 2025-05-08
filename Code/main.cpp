@@ -9,7 +9,7 @@
    1) Ali Mohamed Eissa Aboelmagd.
    2) Addulrahman Ahmed Mohamed Rashad.
    3) Abdulaziz Ahmed Abdulaziz.
-   => Student at Benha Faculty of Engineering, Communications & Computer Engineering Department.
+   => Students at Benha Faculty of Engineering, Communications & Computer Engineering Department.
 ========================================================================================================================================
 */
 
