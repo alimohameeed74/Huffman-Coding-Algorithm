@@ -187,7 +187,6 @@ void printCharCodeFreqFromTree(Node* root, CustomMap& codeMap) {
 int main() {
     string text="" ;
 
-    CustomMap x;
 // ==================================================
 // The File Contains The Text to Be Encoded.
 
