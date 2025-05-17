@@ -10,7 +10,7 @@ This project is an implementation of the Huffman Coding Algorithm in C++. Huffma
 2. [How Huffman Coding Works](#how-huffman-coding-works)  
 3. [Features](#features)  
 4. [Project Structure](#project-structure)  
-5. [Example](#example)  
+  
 
 ---
 
@@ -60,43 +60,3 @@ The project demonstrates:
 ├── Original_Text.txt         # Input file containing the original text
 ├── Binary_Encoded_File.txt   # Output file with the encoded binary text
 ├── README.md                 # Project documentation
-
-## Example
-
-### Input Text:
-```
-
-ABBC
-
-```
-
-### Frequency of Characters:
-```
-
-A:1, B:2, C:1
-
-```
-
-### Generated Huffman Codes:
-```
-
-B: 0
-A: 10
-C: 11
-
-```
-
-### Encoded Output (Binary):
-```
-
-100011
-
-```
-
-### Decoded Output:
-```
-
-ABBC
-
-
-```
