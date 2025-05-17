@@ -1,67 +1,67 @@
-# Huffman-Coding-Algorithm
+# Huffman Coding Algorithm in C++
 
-
-This is a C++ implementation of the **Huffman Coding Algorithm**, a well-known algorithm used for **lossless data compression**. The project demonstrates how to compress and decompress text efficiently using a binary tree structure. The goal of this project is to understand how Huffman Coding works and to implement it in C++.
-
-##  Table of Contents
-
-1. [Project Overview](#-project-overview)
-2. [Technologies Used](#-technologies-used)
-3. [How Huffman Coding Works](#-how-huffman-coding-works)
-4. [Features](#-features)
-5. [Example](#-example)
-   
-##  Project Overview
-
-The **Huffman Coding Algorithm** minimizes the size of data by assigning shorter binary codes to more frequent characters and longer codes to less frequent ones. It uses a **binary tree** (Huffman Tree) to generate these codes. This project provides a detailed implementation of the algorithm from scratch, focusing on building the tree, generating the codes, and encoding/decoding the data.
+This project is an implementation of the Huffman Coding Algorithm in C++. Huffman Coding is a lossless data compression technique used to reduce the size of data by encoding more frequent characters with shorter codes. The program reads text from a file, compresses it using Huffman Coding, saves the encoded version to another file, and then decodes it back to its original form. This demonstrates the efficiency and correctness of the algorithm in handling compression and decompression.
 
 ---
 
-##  Technologies Used
+## Table of Contents
 
-- **C++17** – For implementing the algorithm and handling the core logic.
-- **Binary Tree** – The structure used to build the Huffman Tree.
-- **STL (Standard Template Library)** – Utilizing `priority_queue` for efficient tree construction, `map` for character frequencies, and `vector` for managing the nodes.
-- **File I/O** – For reading input data and writing compressed data (optional feature).
-
----
-
-##  How Huffman Coding Works
-
-1. **Frequency Calculation:**  
-   - First, the algorithm counts the frequency of each character in the input text.
-
-2. **Huffman Tree Construction:**  
-   - Using a **priority queue**, the algorithm builds a binary tree where each node represents a character and its frequency. The two least frequent characters are combined to form a new node, and this process continues until a single tree is formed.
-
-3. **Binary Code Generation:**  
-   - The tree is then traversed, assigning binary codes to each character. Left edges represent `0`, and right edges represent `1`. The binary code for each character is determined by the path from the root of the tree to the character node.
-
-4. **Encoding:**  
-   - The input text is encoded using the generated binary codes for each character.
-
-5. **Decoding:**  
-   - The encoded binary data can be decoded back to its original text by traversing the Huffman Tree using the binary codes.
+1. [Project Overview](#project-overview)  
+2. [How Huffman Coding Works](#how-huffman-coding-works)  
+3. [Features](#features)  
+4. [Project Structure](#project-structure)  
+5. [Example](#example)  
 
 ---
 
-##  Features
+## Project Overview
 
-- **Huffman Tree Construction:**  
-  Builds a binary tree from the frequencies of the input characters using a **min-heap** (priority queue).
-  
-- **Text Compression:**  
-  Compresses input text into a binary format using the generated Huffman codes.
+This is a C++ implementation of the Huffman Coding Algorithm, a well-known and widely used method for lossless data compression. The algorithm is based on the frequency of characters in the input text. By assigning shorter binary codes to more frequent characters and longer codes to less frequent ones, it effectively reduces the overall size of the data.
 
-- **Text Decompression:**  
-  Decodes the compressed binary data back into the original text using the Huffman Tree.
-
-- **File I/O Support:**  
-  Optionally supports reading from and writing to text files for both compression and decompression.
+The project demonstrates:
+- Frequency analysis of characters in a text
+- Construction of a Huffman tree
+- Generation of binary codes for each character
+- Compression of input text
+- Decompression of encoded data
 
 ---
 
-##  Example
+## How Huffman Coding Works
+
+1. Count the frequency of each character in the input.
+2. Insert each character into a priority queue (min-heap) based on frequency.
+3. Build a binary tree (Huffman Tree) where:
+   - Each leaf node is a character.
+   - The path from root to leaf represents the character’s binary code.
+4. Encode the text using the generated codes.
+5. To decode, traverse the tree using the binary codes to recover the original characters.
+
+---
+
+## Features
+
+- Reads input text from `Original_Text.txt`
+- Calculates frequencies of all characters
+- Builds the Huffman Tree using a priority queue
+- Generates and displays Huffman codes
+- Compresses the text into a binary string
+- Saves the encoded string into `Binary_Encoded_File.txt`
+- Decodes the binary string back to the original text
+- Calculates and displays the size before and after compression
+
+---
+
+## Project Structure
+
+```plaintext
+.
+├── Huffman_Coding.cpp        # Main source code file
+├── Original_Text.txt         # Input file containing the original text
+├── Binary_Encoded_File.txt   # Output file with the encoded binary text
+├── README.md                 # Project documentation
+
+## Example
 
 ### Input Text:
 ```
@@ -100,10 +100,3 @@ ABBC
 
 
 ```
-
-
-
-
-
-
-
