@@ -7,9 +7,9 @@
    how Huffman Coding works and to implement it in C++.
    => Made By:
    1) Ali Mohamed Eissa Aboelmagd.
-   2) Abdulrahman Ahmed Mohamed Rashad.
+   2) Addulrahman Ahmed Mohamed Rashad.
    3) Abdulaziz Ahmed Abdulaziz.
-   => Students at Benha Faculty of Engineering, Communications & Computer Engineering Department.
+   => Student at Benha Faculty of Engineering, Communications & Computer Engineering Department.
 ========================================================================================================================================
 */
 
@@ -19,12 +19,13 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <iomanip>  // For Just Display, Not More.
 
 using namespace std;
 
 
 // ==================================================
-// The Structure of The Node
+// The Structure of The Node.
 struct Node {
     char ch;
     int freq;
@@ -40,7 +41,7 @@ struct Node {
 
 
 // ==================================================
-// Compare to Determine The Priority of Nodes
+// Compare to Determine The Priority of Nodes.
 struct Compare {
     bool operator()(Node* a, Node* b) {
         return a->freq > b->freq;
@@ -54,15 +55,16 @@ struct Compare {
 struct CharMap {
     char ch;
     string code;
+    int ch_freq = 0;
 };
 // ==================================================
 
 
 
 // ==================================================
-// Class for Map
+// Class for Map.
 class CustomMap {
-    CharMap data[256]; // Max Number of Letters
+    CharMap data[256]; // Max Number of Letters.
     int size;
 public:
     CustomMap() {
@@ -76,7 +78,7 @@ public:
                 return;
             }
         }
-        data[size++] = {ch, code};
+        data[size++] = {ch, code , 0};
     }
 
     string get_code_of_char(char ch) {
@@ -94,22 +96,22 @@ public:
     }
 
     void incrementFreq(char ch) {
-        for (int i = 0; i < size; ++i) {
-            if (data[i].ch == ch) {
-                int freq = stoi(data[i].code);
-                data[i].code = to_string(freq + 1);
-                return;
-            }
+    for (int i = 0; i < size; ++i) {
+        if (data[i].ch == ch) {
+            data[i].ch_freq += 1;
+            return;
         }
-        data[size++] = {ch, "1"};
+    }
+    data[size++] = {ch, "", 1};
     }
 
     int getFreq(char ch) {
-        for (int i = 0; i < size; ++i)
-            if (data[i].ch == ch)
-                return stoi(data[i].code);
-        return 0;
+    for (int i = 0; i < size; ++i)
+        if (data[i].ch == ch)
+            return data[i].ch_freq;
+    return 0;
     }
+
 
     int getSize() {
         return size;
@@ -124,7 +126,7 @@ public:
 
 
 // ==================================================
-// Generate Codes for Each Letter
+// Generate Codes for Each Letter.
 void generateCodes(Node* root, string code, CustomMap& huffmanCode) {
     if (!root)
         return;
@@ -140,7 +142,7 @@ void generateCodes(Node* root, string code, CustomMap& huffmanCode) {
 
 
 // ==================================================
-// Function for Decoding
+// Function for Decoding.
 string decode(Node* root, string encodedStr) {
     string result = "";
     Node* curr = root;
@@ -158,25 +160,44 @@ string decode(Node* root, string encodedStr) {
 // ==================================================
 
 
+// ==================================================
+// Function for Display Each Character, Its Code and Its Frequency.
+void printCharCodeFreqFromTree(Node* root, CustomMap& codeMap) {
+    if (!root) return;
 
+    if (!root->left && !root->right) {
+        string code = codeMap.get_code_of_char(root->ch);
 
+        // Print formatted output
+        cout << left << setw(10) << root->ch
+             << setw(20) << code
+             << setw(10) << root->freq << endl;
+        return;
+    }
 
-// Main Function
-int main() {
-    string text="" ;
+    printCharCodeFreqFromTree(root->left, codeMap);
+    printCharCodeFreqFromTree(root->right, codeMap);
+}
+// ==================================================
+
 
 
 // ==================================================
-// The File Contains The Text to Be Encoded
+// Main Function.
+int main() {
+    string text="" ;
+
+    CustomMap x;
+// ==================================================
+// The File Contains The Text to Be Encoded.
 
     string In_filePath = "Original_Text.txt";
 
 // ==================================================
 
 
-
 // ==================================================
-// Open the file Using ifstream
+// Open the file Using ifstream.
 
     ifstream In_file(In_filePath);
 
@@ -195,7 +216,7 @@ int main() {
 
 
 // ==================================================
-// Read The File Line By Line Into a String and Store in Text Variable
+// Read The File Line By Line Into a String and Store in Text Variable.
     string line;
     while (getline(In_file, line)) {
             text+=line;
@@ -204,14 +225,14 @@ int main() {
 
 
 // ==================================================
-// Close the Input file
+// Close the Input file.
     In_file.close();
 // ==================================================
 
 
 
 // ==================================================
-// Calculate Frequences
+// Calculate Frequences.
     CustomMap freqMap;
     for (char ch : text) {
         freqMap.incrementFreq(ch);
@@ -220,13 +241,12 @@ int main() {
 
 
 // ==================================================
-// Bulding The Tree
+// Bulding The Tree.
     priority_queue<Node*, vector<Node*>, Compare> pq;
     CharMap* freqs = freqMap.getData();
     for (int i = 0; i < freqMap.getSize(); ++i) {
-        pq.push(new Node(freqs[i].ch, stoi(freqs[i].code)));   // Stores The Letter and Its Frequency in The Queue
+    pq.push(new Node(freqs[i].ch, freqs[i].ch_freq));
     }
-
     while (pq.size() > 1) {
         Node* left = pq.top(); pq.pop();
         Node* right = pq.top(); pq.pop();
@@ -243,19 +263,22 @@ int main() {
 
 
 // ==================================================
-// Generate Codes
+// Generate Codes.
     CustomMap huffmanCode;
     generateCodes(root, "", huffmanCode);
 // ==================================================
 
 
-
 // ==================================================
-// Printing The Codes for Each letter
-    cout << "Huffman Codes:\n";
-    for (int i = 0; i < huffmanCode.getSize(); ++i) {
-        cout << huffmanCode.getData()[i].ch << ": " << huffmanCode.getData()[i].code << endl;
-    }
+// Printing The Codes for Each letter.
+    cout << "Huffman Codes";
+    cout << "\n===================================================\n";
+    cout << left << setw(10) << "Char"
+         << setw(20) << "Code"
+         << setw(10) << "Freq" << endl;
+    cout << "---------------------------------------------------\n";
+
+    printCharCodeFreqFromTree(root, huffmanCode);
 // ==================================================
 
 
@@ -266,7 +289,7 @@ int main() {
 
     cout<<"===================================================\n";
 // ==================================================
-// Stored The Encoded String to Print it
+// Stored The Encoded String to Print it.
     string encoded = "";
     for (char ch : text) {
         encoded += huffmanCode.get_code_of_char(ch);
@@ -276,21 +299,21 @@ int main() {
 
 
 // ==================================================
-// Preparing a File to Store The Encoded Data
+// Preparing a File to Store The Encoded Data.
 // ==================================================
-// Specify the File Path
+// Specify the File Path.
     string Out_filePath = "Binary_Encoeded_File.txt";
 // ==================================================
 
 
 // ==================================================
-// Create an ofstream object (opens file for writing)
+// Create an ofstream object (opens file for writing).
     ofstream Out_file(Out_filePath);
 // ==================================================
 
 
 // ==================================================
-// Check if the file opened successfully
+// Check if the file opened successfully.
     if (!Out_file.is_open()) {
         cout << "Failed to open file for writing: " << Out_filePath << endl;
         return 1;
@@ -299,7 +322,7 @@ int main() {
 
 
 // ==================================================
-// Stores the Data into Output File
+// Stores the Data into Output File.
     for (char ch : encoded) {
         Out_file << ch;
     }
@@ -308,16 +331,16 @@ int main() {
 
 
 // ==================================================
-    // Close the Out file
+    // Close the Out file.
     Out_file.close();
 // ==================================================
 
 
 
 // ==================================================
-// Printing Stage
+// Printing Stage.
 // ==================================================
-// Printing The Encoded Pattern and Display Its Size After Compression
+// Printing The Encoded Pattern and Display Its Size After Compression.
     cout << "\nEncoded string:\n" << encoded << endl << endl;
 
     cout<<"===================================================\n";
@@ -330,13 +353,13 @@ int main() {
 
 
 // ==================================================
-// Diplay The Decoded Text
+// Diplay The Decoded Text.
     string decoded = decode(root, encoded);
     cout << "\nDecoded string:\n" << decoded << endl;
 // ==================================================
 
 // ==================================================
-// End The Program
+// End The Program.
     return 0;
 // ==================================================
 }
