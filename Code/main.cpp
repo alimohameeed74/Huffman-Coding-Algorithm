@@ -7,7 +7,7 @@
    how Huffman Coding works and to implement it in C++.
    => Made By:
    1) Ali Mohamed Eissa Aboelmagd.
-   2) Addulrahman Ahmed Mohamed Rashad.
+   2) Abdulrahman Ahmed Mohamed Rashad.
    3) Abdulaziz Ahmed Abdulaziz.
    => Students at Benha Faculty of Engineering, Communications & Computer Engineering Department.
 ========================================================================================================================================
